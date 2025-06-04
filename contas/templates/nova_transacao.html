@@ -1,0 +1,23 @@
+<!-- contas/templates/nova_transacao.html -->
+
+{% extends "base.html" %}
+{% block title %}
+    {% if transacao %}Editar{% else %}Nova{% endif %} Transação
+{% endblock %}
+
+{% block content %}
+<h2>
+    {% if transacao %}
+        Editar Transação
+    {% else %}
+        Nova Transação
+    {% endif %}
+</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Salvar</button>
+    <a href="{% url 'painel' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

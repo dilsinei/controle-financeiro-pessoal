@@ -1,0 +1,89 @@
+<!-- contas/templates/painel.html -->
+
+{% extends "base.html" %}
+{% block title %}Painel - Controle Financeiro{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Bem-vindo ao seu Painel, {{ user.username }}!</h2>
+<a href="{% url 'logout' %}" class="btn btn-danger btn-sm float-end">Sair</a>
+
+<hr class="mb-4">
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-header">Receitas</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{ total_receitas|floatformat:2 }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-header">Despesas</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{ total_despesas|floatformat:2 }}</h5>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-header">Saldo Atual</div>
+            <div class="card-body">
+                <h5 class="card-title">R$ {{ saldo|floatformat:2 }}</h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h3 class="mt-5">Últimas Transações</h3>
+{% if transacoes %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Tipo</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transacao in transacoes %}
+            <tr>
+                <td>{{ transacao.data|date:"d/m/Y" }}</td>
+                <td>{{ transacao.tipo }}</td>
+                <td>{{ transacao.descricao }}</td>
+                <td>
+                    {% if transacao.tipo == 'Receita' %}
+                        <span class="text-success">+ R$ {{ transacao.valor|floatformat:2 }}</span>
+                    {% else %}
+                        <span class="text-danger">- R$ {{ transacao.valor|floatformat:2 }}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editar_transacao' transacao.id %}" class="btn btn-sm btn-warning">Editar</a>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% else %}
+<p>Você ainda não tem nenhuma transação registrada.</p>
+{% endif %}
+
+<a href="{% url 'nova_transacao' %}" class="btn btn-primary mb-5">+ Nova Transação</a>
+
+<!-- Gráfico -->
+ {% load static %}
+
+<h3>Resumo Financeiro (Gráfico)</h3>
+<canvas id="graficoResumo" width="400" height="150"
+        data-receitas="{{ total_receitas }}"
+        data-despesas="{{ total_despesas }}">
+</canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<script src="{% static 'js/grafico_resumo.js' %}"></script>
+
+{% endblock %}
