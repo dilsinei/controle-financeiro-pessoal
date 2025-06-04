@@ -1,21 +1,18 @@
 <!-- contas/templates/home.html -->
-
+ 
 {% extends "base.html" %}
-{% block title %}Pagina Inicial - Controle Financeiro{% endblock %}
+{% block title %}Página Inicial - Controle Financeiro{% endblock %}
 
 {% block content %}
-<div class="text-center my-5"
+<div class="centered my-5">
     <h1>Bem-vindo ao Controle de Finanças Pessoais</h1>
-    <p class="lead">Organize suas receitas e despesas de forma simples e prática.</p>
+    <p class="subtitle">Organize suas receitas e despesas de forma simples e prática.</p>
 
     {% if user.is_authenticated %}
-        <a href="{% url 'painel' %}" class="btn btn-success btn-lg">Acessar Painel</a>
+        <a href="{% url 'painel' %}" class="btn btn-success">Acessar Painel</a>
     {% else %}
-        <a href="{% url 'registro' %}" class="btn btn-primary btn-lg me-2">Registrar</a> 
-        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Entrar</a> 
+        <a href="{% url 'registro' %}" class="btn btn-primary me-2">Registrar</a>
+        <a href="{% url 'login' %}" class="btn btn-outline">Entrar</a>
     {% endif %}
 </div>
 {% endblock %}
-
-</body>
-</html>

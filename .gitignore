@@ -1,6 +1,7 @@
 # Diretório virtual
 venv/
 __pycache__/
+/staticfiles/
 
 # Arquivos do sistema
 *.pyc

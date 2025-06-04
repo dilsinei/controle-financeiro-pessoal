@@ -2,6 +2,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Transacao
@@ -18,6 +19,17 @@ class TransacaoForm(forms.ModelForm):
 # View da página inicial
 def home(request):
     return render(request, "home.html")
+
+
+# View da pagina de logout
+def logout_view(request):
+    logout(request)
+    messages.info(request, "Você foi desconectado com sucesso.")
+    return redirect("pagina_logout")
+
+
+def pagina_logout(request):
+    return render(request, "logout.html")
 
 
 # View do registro
@@ -38,11 +50,6 @@ def registro(request):
 @login_required
 def painel(request):
     user = request.user
-
-    # # Simulando dados
-    # total_receitas = 5000.00
-    # total_despesas = 3200.00
-    # saldo = total_receitas - total_receitas
 
     # Buscar transação do usuário logado
     transacoes = Transacao.objects.filter(usuario=user).order_by("-data")[:5]

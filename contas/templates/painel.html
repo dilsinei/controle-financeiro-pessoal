@@ -4,47 +4,44 @@
 {% block title %}Painel - Controle Financeiro{% endblock %}
 
 {% block content %}
-<h2 class="mb-4">Bem-vindo ao seu Painel, {{ user.username }}!</h2>
-<a href="{% url 'logout' %}" class="btn btn-danger btn-sm float-end">Sair</a>
+<div class="d-flex justify-between align-center mb-4">
+    <h2>Bem-vindo ao seu Painel, {{ user.username }}!</h2>
+    <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sair</a>
+</div>
 
 <hr class="mb-4">
 
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="card text-white bg-success">
-            <div class="card-header">Receitas</div>
-            <div class="card-body">
-                <h5 class="card-title">R$ {{ total_receitas|floatformat:2 }}</h5>
-            </div>
+<div class="grid-3 gap-4">
+    <div class="card bg-success text-white">
+        <div class="card-header">Receitas</div>
+        <div class="card-body">
+            <h5 class="card-title">R$ {{ total_receitas|floatformat:2 }}</h5>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-white bg-danger">
-            <div class="card-header">Despesas</div>
-            <div class="card-body">
-                <h5 class="card-title">R$ {{ total_despesas|floatformat:2 }}</h5>
-            </div>
+    <div class="card bg-danger text-white">
+        <div class="card-header">Despesas</div>
+        <div class="card-body">
+            <h5 class="card-title">R$ {{ total_despesas|floatformat:2 }}</h5>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card text-white bg-primary">
-            <div class="card-header">Saldo Atual</div>
-            <div class="card-body">
-                <h5 class="card-title">R$ {{ saldo|floatformat:2 }}</h5>
-            </div>
+    <div class="card bg-primary text-white">
+        <div class="card-header">Saldo Atual</div>
+        <div class="card-body">
+            <h5 class="card-title">R$ {{ saldo|floatformat:2 }}</h5>
         </div>
     </div>
 </div>
 
 <h3 class="mt-5">Últimas Transações</h3>
 {% if transacoes %}
-<table class="table table-hover">
+<table class="table">
     <thead>
         <tr>
             <th>Data</th>
             <th>Tipo</th>
             <th>Descrição</th>
             <th>Valor</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -61,11 +58,10 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'editar_transacao' transacao.id %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'editar_transacao' transacao.id %}" class="btn btn-warning btn-sm">Editar</a>
                 </td>
             </tr>
         {% endfor %}
-
     </tbody>
 </table>
 {% else %}
@@ -75,8 +71,7 @@
 <a href="{% url 'nova_transacao' %}" class="btn btn-primary mb-5">+ Nova Transação</a>
 
 <!-- Gráfico -->
- {% load static %}
-
+{% load static %}
 <h3>Resumo Financeiro (Gráfico)</h3>
 <canvas id="graficoResumo" width="400" height="150"
         data-receitas="{{ total_receitas }}"
