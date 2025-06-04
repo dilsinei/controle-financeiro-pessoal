@@ -13,7 +13,8 @@ from django.db.models import Sum
 class TransacaoForm(forms.ModelForm):
     class Meta:
         model = Transacao
-        fields = ["descricao", "valor", "categoria", "tipo"]
+        fields = ["descricao", "valor", "categoria", "tipo", "data"]
+        widgets = {"data": forms.DateInput(attrs={"type": "date"})}
 
 
 # View da página inicial
