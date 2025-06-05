@@ -1,12 +1,18 @@
 <!-- contas/templates/painel.html -->
 
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Painel - Controle Financeiro{% endblock %}
+
+{% block container_class %}container-fluid{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-between align-center mb-4">
-    <h2>Bem-vindo ao seu Painel, {{ user.username }}!</h2>
-    <a href="{% url 'logout' %}" class="btn btn-danger btn-sm">Sair</a>
+    <h2>Bem-vindo ao seu Painel, {{ user.username|title }}!</h2>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">Sair</button>
+    </form>
 </div>
 
 <hr class="mb-4">
@@ -46,21 +52,21 @@
     </thead>
     <tbody>
         {% for transacao in transacoes %}
-            <tr>
-                <td>{{ transacao.data|date:"d/m/Y" }}</td>
-                <td>{{ transacao.tipo }}</td>
-                <td>{{ transacao.descricao }}</td>
-                <td>
-                    {% if transacao.tipo == 'Receita' %}
-                        <span class="text-success">+ R$ {{ transacao.valor|floatformat:2 }}</span>
-                    {% else %}
-                        <span class="text-danger">- R$ {{ transacao.valor|floatformat:2 }}</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'editar_transacao' transacao.id %}" class="btn btn-warning btn-sm">Editar</a>
-                </td>
-            </tr>
+        <tr>
+            <td>{{ transacao.data|date:"d/m/Y" }}</td>
+            <td>{{ transacao.tipo }}</td>
+            <td>{{ transacao.descricao }}</td>
+            <td>
+                {% if transacao.tipo == 'Receita' %}
+                <span class="text-success">+ R$ {{ transacao.valor|floatformat:2 }}</span>
+                {% else %}
+                <span class="text-danger">- R$ {{ transacao.valor|floatformat:2 }}</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'editar_transacao' transacao.id %}" class="btn btn-warning btn-sm">Editar</a>
+            </td>
+        </tr>
         {% endfor %}
     </tbody>
 </table>
@@ -70,15 +76,11 @@
 
 <a href="{% url 'nova_transacao' %}" class="btn btn-primary mb-5">+ Nova Transação</a>
 
-<!-- Gráfico -->
-{% load static %}
 <h3>Resumo Financeiro (Gráfico)</h3>
-<canvas id="graficoResumo" width="400" height="150"
-        data-receitas="{{ total_receitas }}"
-        data-despesas="{{ total_despesas }}">
+<canvas id="graficoResumo" width="400" height="150" data-receitas="{{ total_receitas }}"
+    data-despesas="{{ total_despesas }}">
 </canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/grafico_resumo.js' %}"></script>
-
 {% endblock %}

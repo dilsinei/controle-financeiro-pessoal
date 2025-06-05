@@ -8,28 +8,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Controle Financeiro{% endblock %}</title>
 
-    <!-- Mini Framework CSS -->
+    <!-- CSS Base + Navbar -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-    
+
+    <!-- CSS específico da página -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <!-- Navbar personalizada -->
+    <!-- Navbar Global -->
     <nav class="navbar">
         <div class="navbar-container">
             <a class="navbar-brand" href="{% url 'home' %}">Finanças Pessoais</a>
             <div class="navbar-menu">
                 <ul class="navbar-list">
                     {% if user.is_authenticated %}
-                        <li>
-                            <a class="nav-link" href="{% url 'painel' %}">Painel</a>
-                        </li>
+                        <li><a class="nav-link" href="{% url 'painel' %}">Painel</a></li>
                         <li>
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn-link nav-link" >Sair</button>
+                                <button type="submit" class="btn-link nav-link">Sair</button>
                             </form>
                         </li>
                     {% else %}
@@ -41,13 +40,11 @@
         </div>
     </nav>
 
-    <!-- Conteúdo principal -->
-    <main class="container my-4">
-        {% block content %}
-        {% endblock %}
+    <!-- Conteúdo dinâmico -->
+    <main class="{% block container_class %}container-fluid{% endblock %} my-4">
+        {% block content %}{% endblock %}
     </main>
 
     {% block extra_js %}{% endblock %}
 </body>
 </html>
-

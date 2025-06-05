@@ -10,28 +10,34 @@
         <h3 class="form-title">Criar Conta</h3>
 
         {% if messages %}
-            {% for message in messages %}
-                <div class="alert success">
-                    {{ message }}
-                </div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="alert success">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% endif %}
 
         <form method="post" novalidate>
             {% csrf_token %}
             {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <div class="error-message">
-                            {{ field.errors|striptags }}
-                        </div>
-                    {% endif %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="error-message">
+                    {{ field.errors|striptags }}
                 </div>
+                {% endif %}
+            </div>
             {% endfor %}
 
             <button type="submit" class="btn primary full-width">Registrar</button>
         </form>
 
-        <p class="text-center m
+        <p class="text-center mb-0">
+            Já tem conta? <a href="{% url 'login' %}">Faça login</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}
